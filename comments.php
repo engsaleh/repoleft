@@ -50,12 +50,14 @@ if ( post_password_required() ) {
 
 		<ol class="comment-list">
 			<?php
-			wp_list_comments(
-				array(
-					'style'      => 'ol',
-					'short_ping' => true,
-				)
-			);
+				wp_list_comments(
+					array(
+						'style'			=>	'ol',
+						'short_ping'	=>	true,
+						'avatar_size'	=>	45,
+						'max_depth'		=>	'2'
+					)
+				);
 			?>
 		</ol><!-- .comment-list -->
 
@@ -71,7 +73,40 @@ if ( post_password_required() ) {
 
 	endif; // Check for have_comments().
 
-	comment_form();
+	$cmt_args			=	array(
+		'fields'		=>	array(
+			'author'	=>	'
+				<div class="form-top-field">
+					<div class="form-group">
+						<label for="name">'.esc_html__( "Name*", "frannawp" ).'</label>
+						<input type="text" name="author" id="name" class="form-control" placeholder="'.esc_attr__( 'Enter your Name', 'frannawp' ).'">
+					</div>
+			',
+			'email'		=>	'
+				<div class="form-group">
+					<label for="email">'.esc_html__( "Email*", "frannawp" ).'</label>
+					<input type="email" name="email" id="email" class="form-control" placeholder="'.esc_attr__( 'Enter your Email', 'frannawp' ).'">
+				</div>
+			',
+			'url'		=>	'
+				<div class="form-group">
+					<label for="url">'.esc_html__( "Website", "frannawp" ).'</label>
+					<input type="url" name="url" id="url" class="form-control" placeholder="'.esc_attr__( 'Enter your Website', 'frannawp' ).'">
+				</div>
+			</div>
+			',
+		),
+		'comment_field'	=>	'
+			<div class="form-group">
+				<textarea name="comment" id="comment" cols="30" rows="8" class="form-control" placeholder="'.esc_attr__( 'Your Comment*', 'frannawp' ).'"></textarea>
+			</div>
+		',
+		'class_submit'		=>	'btn cmt-btn btn-2 read-more-btn btn-clear',
+		'label_submit'		=>	esc_html__( 'Send Comment', 'frannawp' ),
+		'title_reply'		=>	esc_html__( 'Leave a reply', 'frannawp' )
+	);
+
+	comment_form( $cmt_args );
 	?>
 
 </div><!-- #comments -->

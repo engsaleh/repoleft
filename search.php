@@ -10,44 +10,65 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+<div class="content-wrapper">
 
-		<?php if ( have_posts() ) : ?>
+	<?php 
+		/**
+		 * Hook: frannawp_before_main_content
+		 * 
+		 * @hooked frannawp_wrapper_before - 10
+		 */
+		do_action( 'frannawp_before_main_content' ); 
+	?>
 
-			<header class="page-header">
-				<h1 class="page-title">
-					<?php
-					/* translators: %s: search query. */
-					printf( esc_html__( 'Search Results for: %s', 'frannawp' ), '<span>' . get_search_query() . '</span>' );
-					?>
-				</h1>
-			</header><!-- .page-header -->
+		<div class="archive-container">
 
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+			<?php if ( have_posts() ) : ?>
 
-				/**
-				 * Run the loop for the search to output the results.
-				 * If you want to overload this in a child theme then include a file
-				 * called content-search.php and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', 'search' );
+				<header class="page-header">
+					<h1 class="page-title">
+						<?php
+						/* translators: %s: search query. */
+						printf( esc_html__( 'Search Results for: "%s"', 'frannawp' ), '<span>' . get_search_query() . '</span>' );
+						?>
+					</h1>
+				</header><!-- .page-header -->
 
-			endwhile;
+				<?php 
+					/**
+					 * Hook: frannawp_main_content_display
+					 * 
+					 * @hooked frannawp_display_content - 10
+					 */
+					do_action( 'frannawp_main_content_display' ); 
+				?>
 
-			the_posts_navigation();
+			<?php 
+			else :
 
-		else :
+				get_template_part( 'template-parts/content', 'none' );
 
-			get_template_part( 'template-parts/content', 'none' );
+			endif;
+			?>
 
-		endif;
-		?>
+		</div><!-- .archive-container -->
 
-	</main><!-- #main -->
+		<div class="paginate-links">
+			<?php echo wp_kses_post( paginate_links() ); ?>
+		</div><!-- .paginate-links -->
+
+	<?php 
+		/**
+		 * Hook: frannawp_after_main_content
+		 * 
+		 * @hooked frannawp_wrapper_after - 10
+		 */
+		do_action( 'frannawp_after_main_content' ); 
+	?>
+
+	<?php get_sidebar(); ?>
+
+</div><!-- .content-wrapper -->
 
 <?php
-get_sidebar();
 get_footer();

@@ -10,42 +10,63 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+<div class="content-wrapper">
 
-		<?php if ( have_posts() ) : ?>
+	<?php 
+		/**
+		 * Hook: frannawp_before_main_content
+		 * 
+		 * @hooked frannawp_wrapper_before - 10
+		 */
+		do_action( 'frannawp_before_main_content' ); 
+	?>
 
-			<header class="page-header">
-				<?php
-				the_archive_title( '<h1 class="page-title">', '</h1>' );
-				the_archive_description( '<div class="archive-description">', '</div>' );
+		<div class="archive-container">
+
+			<?php if ( have_posts() ) : ?>
+
+				<header class="page-header">
+					<?php
+					the_archive_title( '<h1 class="page-title">', '</h1>' );
+					the_archive_description( '<div class="archive-description">', '</div>' );
+					?>
+				</header><!-- .page-header -->
+
+				<?php 
+					/**
+					 * Hook: frannawp_main_content_display
+					 * 
+					 * @hooked frannawp_display_content - 10
+					 */
+					do_action( 'frannawp_main_content_display' ); 
 				?>
-			</header><!-- .page-header -->
+			
+			<?php 
+			else :
 
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+				get_template_part( 'template-parts/content', 'none' );
 
-				/*
-				 * Include the Post-Type-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', get_post_type() );
+			endif;
+			?>
 
-			endwhile;
+		</div><!-- .archive-container -->
 
-			the_posts_navigation();
+		<div class="paginate-links">
+			<?php echo wp_kses_post( paginate_links() ); ?>
+		</div><!-- .paginate-links -->
 
-		else :
+	<?php 
+		/**
+		 * Hook: frannawp_after_main_content
+		 * 
+		 * @hooked frannawp_wrapper_after - 10
+		 */
+		do_action( 'frannawp_after_main_content' ); 
+	?>
 
-			get_template_part( 'template-parts/content', 'none' );
+	<?php get_sidebar(); ?>
 
-		endif;
-		?>
-
-	</main><!-- #main -->
+</div><!-- .content-wrapper -->
 
 <?php
-get_sidebar();
 get_footer();

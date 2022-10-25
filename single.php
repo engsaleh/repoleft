@@ -10,31 +10,34 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+<div class="content-wrapper">
+	
+	<?php 
+		/**
+		 * Hook: frannawp_before_main_content
+		 * 
+		 * @hooked frannawp_wrapper_before - 10
+		 */
+		do_action( 'frannawp_before_main_content' ); 
+		
+		/**
+		 * Hook: frannawp_main_content_display
+		 * 
+		 * @hooked frannawp_display_content - 10
+		 */
+		do_action( 'frannawp_main_content_display' );
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+		/**
+		 * Hook: frannawp_after_main_content
+		 * 
+		 * @hooked frannawp_wrapper_after - 10
+		 */
+		do_action( 'frannawp_after_main_content' );
+	?>
 
-			get_template_part( 'template-parts/content', get_post_type() );
+	<?php get_sidebar(); ?>
 
-			the_post_navigation(
-				array(
-					'prev_text' => '<span class="nav-subtitle">' . esc_html__( 'Previous:', 'frannawp' ) . '</span> <span class="nav-title">%title</span>',
-					'next_text' => '<span class="nav-subtitle">' . esc_html__( 'Next:', 'frannawp' ) . '</span> <span class="nav-title">%title</span>',
-				)
-			);
-
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
-
-		endwhile; // End of the loop.
-		?>
-
-	</main><!-- #main -->
+</div><!-- .content-wrapper -->
 
 <?php
-get_sidebar();
 get_footer();

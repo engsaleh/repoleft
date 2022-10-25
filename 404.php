@@ -10,51 +10,48 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+	<?php 
+		/**
+		 * Hook: frannawp_before_main_content
+		 * 
+		 * @hooked frannawp_wrapper_before - 10
+		 */
+		do_action( 'frannawp_before_main_content' ); 
+	?>
 
 		<section class="error-404 not-found">
-			<header class="page-header">
-				<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'frannawp' ); ?></h1>
-			</header><!-- .page-header -->
 
 			<div class="page-content">
-				<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'frannawp' ); ?></p>
+				<div class="not-found-msg">
+					<h1 class="entry-title"><?php esc_html_e( '404', 'frannawp' ); ?></h1>
+					<p class="sub-text-1"><?php esc_html_e( 'Sorry! The page you requested could not be found', 'frannawp' ); ?></p>
+					<p class="sub-text-2"><?php esc_html_e( 'Maybe try some search below', 'frannawp' ); ?></p>
+				</div>
 
-					<?php
-					get_search_form();
+				<div class="not-found-search">
+					<?php get_search_form(); ?>
+				</div>
 
-					the_widget( 'WP_Widget_Recent_Posts' );
-					?>
+				<div class="or">
+					<?php esc_html_e( 'Or', 'frannawp' ); ?>
+				</div>
 
-					<div class="widget widget_categories">
-						<h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'frannawp' ); ?></h2>
-						<ul>
-							<?php
-							wp_list_categories(
-								array(
-									'orderby'    => 'count',
-									'order'      => 'DESC',
-									'show_count' => 1,
-									'title_li'   => '',
-									'number'     => 10,
-								)
-							);
-							?>
-						</ul>
-					</div><!-- .widget -->
-
-					<?php
-					/* translators: %1$s: smiley */
-					$frannawp_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'frannawp' ), convert_smilies( ':)' ) ) . '</p>';
-					the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$frannawp_archive_content" );
-
-					the_widget( 'WP_Widget_Tag_Cloud' );
-					?>
+				<div class="go-home-button">
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="home-btn btn read-more-btn btn-2"><?php esc_html_e( 'Go to Homepage', 'frannawp' ); ?></a>
+				</div>
 
 			</div><!-- .page-content -->
+			
 		</section><!-- .error-404 -->
 
-	</main><!-- #main -->
+	<?php 
+		/**
+		 * Hook: frannawp_after_main_content
+		 * 
+		 * @hooked frannawp_wrapper_after - 10
+		 */
+		do_action( 'frannawp_after_main_content' ); 
+	?>
 
 <?php
 get_footer();

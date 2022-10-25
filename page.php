@@ -15,24 +15,44 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+<?php if( is_front_page() ): ?>
 
-		<?php
-		while ( have_posts() ) :
-			the_post();
+	<?php get_template_part( 'template-parts/content', 'frontpage' ); ?>
 
-			get_template_part( 'template-parts/content', 'page' );
+<?php else: ?>
+	<?php if( class_exists( 'WooCommerce' ) && (is_cart() || is_checkout() || is_account_page() ) ): ?>
+		<div class="content-wrapper full">
+	<?php else: ?>
+		<div class="content-wrapper">
+	<?php endif; ?>
 
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
+			<?php 
+				/**
+				 * Hook: frannawp_before_main_content
+				 * 
+				 * @hooked frannawp_wrapper_before - 10
+				 */
+				do_action( 'frannawp_before_main_content' ); 
+				
+				/**
+				 * Hook: frannawp_main_content_display
+				 * 
+				 * @hooked frannawp_display_content - 10
+				 */
+				do_action( 'frannawp_main_content_display' );
 
-		endwhile; // End of the loop.
-		?>
+				/**
+				 * Hook: frannawp_after_main_content
+				 * 
+				 * @hooked frannawp_wrapper_after - 10
+				 */
+				do_action( 'frannawp_after_main_content' );
+			?>
 
-	</main><!-- #main -->
+			<?php get_sidebar(); ?>
+
+		</div><!-- .content-wrapper -->
+<?php endif; ?>
 
 <?php
-get_sidebar();
 get_footer();
